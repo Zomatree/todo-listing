@@ -3,8 +3,6 @@
     <head>
     <title>Todo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-    <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 </head>
@@ -19,10 +17,10 @@
             </ul>
         </div>
     </nav>
-    <div id="content">
-        {{%block content block%}}
+    {% block content %}
+        <div id="content">
 
-        {{% endblock %}}
-    </div>
+        </div>
+    {% end %}
 </body>
 </html>
