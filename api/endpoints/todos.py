@@ -25,19 +25,24 @@ class Add(endpoint.Endpoint):
 
         id = uuid.uuid4()
 
-        row = await self.body.fetchrow("INSERT INTO todos VALUES($1, $2, $3, $4, $5) RETURNING *", id, title, description, done, self.user_id)
+        row = await self.database.fetchrow("INSERT INTO todos VALUES($1, $2, $3, $4, $5) RETURNING *", id, title, description, done, self.user_id)
 
         await self.set_status(201)
-        await self.finish(json.dumps(dict(row)))
+        await self.finish(dict(row))
 
 
 class Remove(endpoint.Endpoint):
-    def delete(self, id):
-        pass
+    async def delete(self, id):
+        result = await self.database.execute("DELETE FROM todos WHERE userid=$1 AND id=$2", self.user_id, id)
+        if result == "DELETE 0":
+            await self.set_status(400)
+        else:
+            await self.set_status(204)
+
 
 def setup(**kwargs):
     return [
-        (f'{kwargs["config"].API}/todos', Todos, kwargs),
-        (f'{kwargs["config"].API}/todos/add', Add, kwargs),
-        (f"{kwargs["config"].API}/todos/remove/[0-9a-f]{{8}}-[0-9a-f]{{4}}-[0-9a-f]{{4}}-[0-9a-f]{{4}}-[0-9a-f]{{12}}", Remove, kwargs)
+        (f'{kwargs["config"].API}/api/todos', Todos, kwargs),
+        (f'{kwargs["config"].API}/api/todos/add', Add, kwargs),
+        (f'{kwargs["config"].API}/api/todos/remove/[0-9a-f]{{8}}-[0-9a-f]{{4}}-[0-9a-f]{{4}}-[0-9a-f]{{4}}-[0-9a-f]{{12}}', Remove, kwargs)
     ]
