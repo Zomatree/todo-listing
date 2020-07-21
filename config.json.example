@@ -3,16 +3,11 @@
   "URL": "localhost:8888",
   "API": "/api/v1",
   "FULL_URL": "http://localhost:8888/api/v1",
-  "COOKIE_SECRET": "",
 
   "DATABASE_INFO": {
     "user": "",
     "password": "",
     "host": "",
     "database": ""
-  },
-
-  "ENDPOINTS": [
-
-  ]
+  }
 }
